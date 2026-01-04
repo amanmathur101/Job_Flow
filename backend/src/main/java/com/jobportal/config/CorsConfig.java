@@ -6,19 +6,26 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig {
 
-    @Value("${app.cors.allowedOrigins}")
-    private String[] allowedOrigins = new String[] {};
+    @org.springframework.context.annotation.Bean
+    public org.springframework.web.filter.CorsFilter corsFilter() {
+        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
 
-    @Override
-    public void addCorsMappings(@org.springframework.lang.NonNull CorsRegistry registry) {
-        // Hardcoded generic CORS policy to fix "Network Error" unconditionally
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*") // Allow ANY origin (Vercel, localhost, etc.)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600);
+        // Allow Credentials
+        config.setAllowCredentials(true);
+
+        // Allow ANY origin
+        config.addAllowedOriginPattern("*");
+
+        // Allow ANY header
+        config.addAllowedHeader("*");
+
+        // Allow ANY method
+        config.addAllowedMethod("*");
+
+        source.registerCorsConfiguration("/**", config);
+        return new org.springframework.web.filter.CorsFilter(source);
     }
 }
