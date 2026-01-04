@@ -1,0 +1,18 @@
+# Java / Spring Boot
+target/
+*.class
+.settings/
+.classpath
+.project
+.vscode/
+
+# Node / React
+node_modules/
+dist/
+build/
+.env
+.env.local
+.DS_Store
+
+# Logs
+*.log
