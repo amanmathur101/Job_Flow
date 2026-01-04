@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+// Fallback to the live Render Backend URL if Env Var is missing
+const API_URL = import.meta.env.VITE_API_URL || 'https://jobflow-backend-x5ow.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
