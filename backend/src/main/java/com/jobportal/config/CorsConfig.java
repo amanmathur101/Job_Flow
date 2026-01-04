@@ -13,20 +13,12 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(@org.springframework.lang.NonNull CorsRegistry registry) {
-        if (allowedOrigins.length == 1 && "*".equals(allowedOrigins[0])) {
-            registry.addMapping("/**")
-                    .allowedOriginPatterns("*")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-                    .maxAge(3600);
-        } else {
-            registry.addMapping("/**")
-                    .allowedOrigins(allowedOrigins)
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-                    .maxAge(3600);
-        }
+        // Hardcoded generic CORS policy to fix "Network Error" unconditionally
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*") // Allow ANY origin (Vercel, localhost, etc.)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
