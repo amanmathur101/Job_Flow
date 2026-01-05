@@ -1,31 +1,29 @@
 package com.jobportal.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class CorsConfig {
 
-    @org.springframework.context.annotation.Bean
-    public org.springframework.web.filter.CorsFilter corsFilter() {
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
-        org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
 
-        // Allow Credentials
+        // ✅ Allow only frontend URLs (NOT *)
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://job-portal-iwcqolo4q-aman-kumars-projects-8e4adb13.vercel.app");
+
         config.setAllowCredentials(true);
-
-        // Allow ANY origin
-        config.addAllowedOriginPattern("*");
-
-        // Allow ANY header
         config.addAllowedHeader("*");
-
-        // Allow ANY method
         config.addAllowedMethod("*");
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new org.springframework.web.filter.CorsFilter(source);
+
+        return new CorsFilter(source);
     }
 }
