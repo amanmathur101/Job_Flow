@@ -13,9 +13,8 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Allow only frontend URLs (NOT *)
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("https://job-portal-iwcqolo4q-aman-kumars-projects-8e4adb13.vercel.app");
+        // ✅ Allow ALL origins for development/testing
+        config.addAllowedOriginPattern("*");
 
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
