@@ -17,17 +17,12 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
-
-        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
-            for (String origin : allowedOrigins.split(",")) {
-                config.addAllowedOriginPattern(origin.trim());
-            }
+        for (String origin : allowedOrigins.split(",")) {
+            config.addAllowedOriginPattern(origin.trim());
         }
 
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
-
         config.addExposedHeader("Authorization");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
