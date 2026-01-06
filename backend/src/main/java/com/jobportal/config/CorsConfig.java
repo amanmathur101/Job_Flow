@@ -21,7 +21,7 @@ public class CorsConfig {
 
         if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
             for (String origin : allowedOrigins.split(",")) {
-                config.addAllowedOrigin(origin.trim());
+                config.addAllowedOriginPattern(origin.trim());
             }
         }
         config.addAllowedOrigin("http://localhost:5173"); // Always allow local dev
