@@ -3,7 +3,7 @@ package com.jobportal.service;
 import java.util.List;
 
 import com.jobportal.dto.JobDto;
-import com.jobportal.model.User;
+import com.jobportal.entity.User;
 
 public interface JobService {
     List<JobDto> getAllJobs();

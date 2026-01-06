@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.jobportal.model.User;
+import com.jobportal.entity.User;
 import com.jobportal.repository.UserRepository;
 
 @Service

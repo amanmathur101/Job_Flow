@@ -1,4 +1,4 @@
-package com.jobportal.security;
+package com.jobportal.util;
 
 import java.security.Key;
 import java.util.Date;
@@ -16,7 +16,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class JwtTokenProvider {
+public class JwtUtils {
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;

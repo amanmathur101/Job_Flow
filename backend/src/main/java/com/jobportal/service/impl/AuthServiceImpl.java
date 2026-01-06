@@ -1,4 +1,4 @@
-package com.jobportal.service;
+package com.jobportal.service.impl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,13 +10,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jobportal.service.AuthService;
+
 import com.jobportal.dto.LoginDto;
 import com.jobportal.dto.SignUpDto;
-import com.jobportal.model.Role;
-import com.jobportal.model.User;
+import com.jobportal.entity.Role;
+import com.jobportal.entity.User;
 import com.jobportal.repository.RoleRepository;
 import com.jobportal.repository.UserRepository;
-import com.jobportal.security.JwtTokenProvider;
+import com.jobportal.util.JwtUtils;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -25,18 +27,18 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtUtils jwtUtils;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
             UserRepository userRepository,
             RoleRepository roleRepository,
             PasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider) {
+            JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+        String token = jwtUtils.generateToken(authentication);
 
         return token;
     }

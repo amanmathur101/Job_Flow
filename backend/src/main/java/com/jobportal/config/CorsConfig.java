@@ -9,6 +9,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class CorsConfig {
 
+    @org.springframework.beans.factory.annotation.Value("${app.cors.allowedOrigins}")
+    private String allowedOrigins;
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -16,10 +19,12 @@ public class CorsConfig {
 
         config.setAllowCredentials(true);
 
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("https://job-portal-delta-lyart.vercel.app");
-        config.addAllowedOrigin("https://job-portal-git-main-aman-kumars-projects-8e4adb13.vercel.app");
-        config.addAllowedOrigin("https://job-portal-iwcqolo4q-aman-kumars-projects-8e4adb13.vercel.app");
+        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+            for (String origin : allowedOrigins.split(",")) {
+                config.addAllowedOrigin(origin.trim());
+            }
+        }
+        config.addAllowedOrigin("http://localhost:5173"); // Always allow local dev
 
         config.addAllowedHeader("*");
         config.addAllowedMethod("*"); // ✅ OPTIONS included

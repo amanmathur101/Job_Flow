@@ -1,4 +1,4 @@
-package com.jobportal.model;
+package com.jobportal.entity;
 
 import java.util.HashSet;
 import java.util.Set;

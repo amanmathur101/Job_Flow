@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobportal.dto.ApplicationDto;
-import com.jobportal.model.User;
+import com.jobportal.entity.User;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.service.ApplicationService;
 

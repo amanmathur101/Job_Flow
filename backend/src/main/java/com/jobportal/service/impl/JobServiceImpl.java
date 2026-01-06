@@ -1,14 +1,17 @@
-package com.jobportal.service;
+package com.jobportal.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.jobportal.service.JobService;
+import com.jobportal.exception.ResourceNotFoundException;
+
 import com.jobportal.dto.JobDto;
-import com.jobportal.model.Company;
-import com.jobportal.model.Job;
-import com.jobportal.model.User;
+import com.jobportal.entity.Company;
+import com.jobportal.entity.Job;
+import com.jobportal.entity.User;
 import com.jobportal.repository.CompanyRepository;
 import com.jobportal.repository.JobRepository;
 
@@ -17,27 +20,30 @@ public class JobServiceImpl implements JobService {
 
     private JobRepository jobRepository;
     private CompanyRepository companyRepository;
+    private com.jobportal.mapper.JobMapper jobMapper;
 
-    public JobServiceImpl(JobRepository jobRepository, CompanyRepository companyRepository) {
+    public JobServiceImpl(JobRepository jobRepository, CompanyRepository companyRepository,
+            com.jobportal.mapper.JobMapper jobMapper) {
         this.jobRepository = jobRepository;
         this.companyRepository = companyRepository;
+        this.jobMapper = jobMapper;
     }
 
     @Override
     public List<JobDto> getAllJobs() {
-        return jobRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
+        return jobRepository.findAll().stream().map(jobMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<JobDto> searchJobs(String query) {
         return jobRepository.findByTitleContainingOrCompanyNameContaining(query, query)
-                .stream().map(this::mapToDto).collect(Collectors.toList());
+                .stream().map(jobMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public JobDto getJobById(@org.springframework.lang.NonNull Long id) {
-        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
-        return mapToDto(job);
+        Job job = jobRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        return jobMapper.toDto(job);
     }
 
     @Override
@@ -61,12 +67,12 @@ public class JobServiceImpl implements JobService {
         }
 
         Job savedJob = jobRepository.save(job);
-        return mapToDto(savedJob);
+        return jobMapper.toDto(savedJob);
     }
 
     @Override
     public JobDto updateJob(@org.springframework.lang.NonNull Long id, JobDto jobDto, User recruiter) {
-        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        Job job = jobRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
         if (!job.getRecruiter().getId().equals(recruiter.getId())) {
             throw new RuntimeException("Unauthorized");
@@ -80,33 +86,16 @@ public class JobServiceImpl implements JobService {
         job.setJobType(jobDto.getJobType());
 
         Job updatedJob = jobRepository.save(job);
-        return mapToDto(updatedJob);
+        return jobMapper.toDto(updatedJob);
     }
 
     @Override
     public void deleteJob(@org.springframework.lang.NonNull Long id, User recruiter) {
-        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        Job job = jobRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
         if (!job.getRecruiter().getId().equals(recruiter.getId())) {
             throw new RuntimeException("Unauthorized");
         }
         jobRepository.delete(job);
     }
 
-    private JobDto mapToDto(Job job) {
-        JobDto dto = new JobDto();
-        dto.setId(job.getId());
-        dto.setTitle(job.getTitle());
-        dto.setDescription(job.getDescription());
-        dto.setRequirements(job.getRequirements());
-        dto.setLocation(job.getLocation());
-        dto.setSalaryRange(job.getSalaryRange());
-        dto.setJobType(job.getJobType());
-        dto.setPostedAt(job.getPostedAt());
-        dto.setRecruiterId(job.getRecruiter().getId());
-        if (job.getCompany() != null) {
-            dto.setCompanyId(job.getCompany().getId());
-            dto.setCompanyName(job.getCompany().getName());
-        }
-        return dto;
-    }
 }

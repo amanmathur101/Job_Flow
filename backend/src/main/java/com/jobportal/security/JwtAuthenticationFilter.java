@@ -16,15 +16,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.jobportal.util.JwtUtils;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtUtils jwtUtils;
 
     private UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtAuthenticationFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
+        this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
 
@@ -37,10 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getTokenFromRequest(request);
 
         // validate token
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+        if (StringUtils.hasText(token) && jwtUtils.validateToken(token)) {
 
             // get username from token
-            String username = jwtTokenProvider.getUsername(token);
+            String username = jwtUtils.getUsername(token);
 
             // load the user associated with token
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
