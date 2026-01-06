@@ -60,6 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    @Override
+    protected boolean shouldNotFilter(@org.springframework.lang.NonNull HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
+
     private String getTokenFromRequest(HttpServletRequest request) {
 
         String bearerToken = request.getHeader("Authorization");
