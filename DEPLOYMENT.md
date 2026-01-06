@@ -14,27 +14,28 @@ Railway is excellent for Spring Boot apps as it automatically detects the `pom.x
 -   A Railway account (login with GitHub).
 
 ### Steps
-1.  **Push to GitHub**: Ensure your latest code (including the `docker-compose.yml` if you want, but Railway provides a managed DB) is on GitHub.
+### Steps
+1.  **Push to GitHub**: Ensure your latest code is on GitHub.
 2.  **Create Project in Railway**:
     -   Click "New Project" -> "Deploy from GitHub repo".
     -   Select your repository (`Job_FLOW_PROJECT`).
-    -   Railway will scan the repo. Since it's a monorepo (frontend and backend in one repo), you need to configure the **Root Directory**.
-3.  **Configure Service**:
-    -   Go to "Settings" of the created service.
-    -   **Root Directory**: Set this to `/backend`. This tells Railway to look for `pom.xml` inside the backend folder.
-    -   **Variables**: Add the following Environment Variables (same as `application.properties` but for prod):
-        -   `DB_HOST`: *{See Database Step below}*
-        -   `DB_PORT`: `5432`
-        -   `DB_NAME`: `railway` (or whatever the DB service provides)
-        -   `DB_USER`: `postgres`
-        -   `DB_PASSWORD`: *{See Database Step below}*
-        -   `APP_JWT_SECRET`: *Generate a random long string*
-        -   `APP_CORS_ALLOWED_ORIGINS`: `https://your-frontend-url.vercel.app` (You will update this after deploying frontend)
+3.  **Configure Service (The App)**:
+    -   Click on the `Job_Flow` service card -> **Settings**.
+    -   **Root Directory**: Set this to `/backend` (Crucial!).
+    -   **Variables**: Add the following (See step 5 for values):
+        -   `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`
+        -   `APP_JWT_SECRET`: (A long random string)
+        -   `APP_CORS_ALLOWED_ORIGINS`: `https://your-frontend-url.vercel.app`
 4.  **Add Database**:
-    -   In the Railway Project view, click "New" -> "Database" -> "PostgreSQL".
-    -   Once created, click on the Postgres card -> "Connect".
-    -   Copy the variables (`PGHOST`, `PGUSER`, `PGPASSWORD`, etc.) to your Backend Service variables.
-5.  **Build & Deploy**: Railway effectively runs `mvn clean package -DskipTests` and starts the jar.
+    -   Project view -> "New" -> "Database" -> "PostgreSQL".
+    -   Wait for it to initialize.
+5.  **Connect App to Database**:
+    -   Click **PostgreSQL** card -> **Variables**. Copy them.
+    -   Click **Job_Flow** card -> **Variables**. Paste them as new variables.
+    -   **Generate JWT Secret**: You can use any long random string.
+6.  **Generate Domain**:
+    -   **Job_Flow** card -> **Settings** -> **Networking** -> **Generate Domain**.
+7.  **Build & Deploy**: It should deploy successfully now.
 
 ---
 
