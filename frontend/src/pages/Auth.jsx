@@ -100,8 +100,8 @@ export const Auth = ({ mode }) => {
                   <button
                     type="button"
                     className={`flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${formData.role === UserRole.CANDIDATE
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-slate-200 hover:border-slate-300 text-slate-600'
                       }`}
                     onClick={() => setFormData({ ...formData, role: UserRole.CANDIDATE })}
                   >
@@ -111,8 +111,8 @@ export const Auth = ({ mode }) => {
                   <button
                     type="button"
                     className={`flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${formData.role === UserRole.RECRUITER
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-slate-200 hover:border-slate-300 text-slate-600'
                       }`}
                     onClick={() => setFormData({ ...formData, role: UserRole.RECRUITER })}
                   >
