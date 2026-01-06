@@ -6,7 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.beans.factory.annotation.Value;
-import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -21,15 +20,15 @@ public class CorsConfig {
         config.setAllowCredentials(true);
 
         if (allowedOrigins != null && !allowedOrigins.isBlank()) {
-            config.setAllowedOrigins(List.of(allowedOrigins));
+            for (String origin : allowedOrigins.split(",")) {
+                config.addAllowedOriginPattern(origin.trim());
+            }
         }
 
-        config.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
 
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Authorization"));
-        ;
+        config.addExposedHeader("Authorization");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
